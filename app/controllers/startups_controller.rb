@@ -1,5 +1,5 @@
 class StartupsController < ApplicationController
-  
+  http_basic_authenticate_with :name => "Admin", :password => "Y0b1b1t"
   def index
     if params[:search].nil? || params[:search].blank?
       raw_list = AngellistApi.get_tag_startups(9217, {:page => params[:page], :per_page => 50, :order => "popularity"})
