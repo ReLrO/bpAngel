@@ -1,0 +1,40 @@
+.media
+  = link_to image_tag(startup.thumb_url, {alt: "thumb", class: "media-object img-thumbnail"}), startup.company_url, class: "pull-left"
+  .media-body
+    %h4.media-heading
+      = startup.name
+    - record = Startup.find_by_company_id(startup.id).present? ? Startup.find_by_company_id(startup.id) : Startup.new
+    = simple_form_for record do |f|
+      = f.input :company_id, :as => :hidden, :input_html => { :value => startup.id }
+      = f.input :company_name, :as => :hidden, :input_html => { :value => startup.name }
+      = f.input :company_url, :as => :hidden, :input_html => { :value => startup.company_url }
+      = f.input :angellist_profile, :as => :hidden, :input_html => { :value => startup.angellist_url }
+      = f.input :status, collection: [['Skipped', 1], ['Contacted', 2]], :label => false, :include_blank => "Select" , input_html: { class: 'status-input' }
+%p
+  = startup.product_desc
+
+#companyCarousel.carousel.slide
+  - if startup.video_url.present?
+    - company_count = startup.screenshots.count + 1
+  - else
+    - company_count = startup.screenshots.count
+  %ol.carousel-indicators
+    - (0..(company_count - 1)).each do |i|
+      %li{"data-target" => "companyCarousel", "data-slide-to" => "#{i}", class: "#{'active' if i == 0}"}
+      
+  .carousel-inner
+    - (0..(company_count - 1)).each do |i|
+      .item{class: "#{'active' if i == 0}"}
+        
+        - if startup.video_url.present? && i == 0 
+          .video-item
+            = link_to "Video", startup.video_url
+        -else
+          = link_to image_tag(startup.screenshots[i].thumb, {alt: "slider"}), startup.screenshots[i].original, :target => "_blank" unless startup.screenshots[i].nil?
+        
+  = link_to "#companyCarousel", "data-slide" => "prev", class: "carousel-control left" do
+    &lsaquo;
+  = link_to "#companyCarousel", "data-slide" => "next", class: "carousel-control right" do
+    &rsaquo;
+  
+  

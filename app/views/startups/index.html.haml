@@ -1,0 +1,39 @@
+.companies-list
+  %table.table.table-hover
+    %thead
+      %tr
+        %th
+        %th
+          Name
+        %th
+          Description
+        %th
+          Quality
+        %th
+          Link
+        %th
+    - @startups.each do |startup|
+      - record = Startup.find_by_company_id(startup.id).present? ? Startup.find_by_company_id(startup.id) : Startup.new
+    
+      - if startup.hidden == false
+        %tr{class: "company-#{startup.id} #{'success' if record.company_id.present?}"}
+          %td.logo.more-info
+            = image_tag(startup.thumb_url, {alt: "logo", class: "img-logo"})
+          %td.more-info
+            = startup.name
+          %td.more-info
+            = startup.high_concept
+          %td.more-info
+            = startup.quality
+          %td
+            = link_to "AngelList", startup.angellist_url, :target => "_blank"
+          %td
+            = simple_form_for record do |f|
+              = f.input :company_id, :as => :hidden, :input_html => { :value => startup.id }
+              = f.input :company_name, :as => :hidden, :input_html => { :value => startup.name }
+              = f.input :company_url, :as => :hidden, :input_html => { :value => startup.company_url }
+              = f.input :angellist_profile, :as => :hidden, :input_html => { :value => startup.angellist_url }
+              = f.input :status, collection: [['Skipped', 1], ['Contacted', 2]], :label => false, :include_blank => "Select" , input_html: { class: 'status-input' }
+    
+    
+  = will_paginate @startups, :class => "pagination pagination-centered"

@@ -1,0 +1,6 @@
+$(".company-info").html("<%= j render 'company_info', :startup => @startup %>");
+$('.carousel').carousel();
+
+$('document').ready(function(){
+  $("div.video-item").embedly({key: "96d026f7d8fb4851948d8cb42bee1819", query: {maxwidth: 270}});
+});
