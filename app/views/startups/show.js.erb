@@ -3,4 +3,24 @@ $('.carousel').carousel();
 
 $('document').ready(function(){
   $("div.video-item").embedly({key: "96d026f7d8fb4851948d8cb42bee1819", query: {maxwidth: 270}});
+
+  	$("select.status-input").change(function(){
+	  if ($(this).val() != "")
+	  {
+	 	  var currentFrom = $(this).closest("form");
+	      var ajaxType = "POST";
+	      if ($(currentFrom).attr("id").indexOf("edit") != -1)
+	      {
+		    ajaxType = "PUT"
+	      }
+	      $.ajax({
+	        url: escape($(currentFrom).attr('action')),
+	        cache: false,
+	        data: $(currentFrom).serialize(),
+	        dataType: "script",
+	        type: ajaxType
+	      });
+	  }
+	});
 });
+
