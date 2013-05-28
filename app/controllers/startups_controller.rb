@@ -11,7 +11,11 @@ class StartupsController < ApplicationController
       search.each do |item| 
         items << item.id
       end
-      @startups = AngellistApi.get_startups(items)
+      if items.any?
+        @startups = AngellistApi.get_startups(items)
+      else
+        @startups = []
+      end
     end
     @startups.define_singleton_method(:total_pages) do
       return raw_list ? raw_list.last_page : 1
