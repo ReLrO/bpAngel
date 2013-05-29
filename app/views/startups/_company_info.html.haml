@@ -1,5 +1,5 @@
 .media
-  = link_to image_tag(startup.thumb_url, {alt: "thumb", class: "media-object img-thumbnail"}), startup.company_url, class: "pull-left"
+  = link_to image_tag(startup.thumb_url, {alt: "thumb", class: "media-object img-thumbnail"}), startup.company_url, target: "_blank", class: "pull-left"
   .media-body
     %h4.media-heading
       = startup.name
